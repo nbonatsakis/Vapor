@@ -1,0 +1,6 @@
+framework module Vapor {
+  umbrella header "Vapor-umbrella.h"
+
+  export *
+  module * { export * }
+}

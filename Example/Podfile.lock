@@ -1,0 +1,19 @@
+PODS:
+  - Anchorage (3.0.0)
+  - Vapor (0.1.0)
+
+DEPENDENCIES:
+  - Anchorage
+  - Vapor (from `../`)
+
+EXTERNAL SOURCES:
+  Vapor:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Anchorage: 0b7244e31069ebc61a4e9611bc670feb7f24a3e2
+  Vapor: e8aefe4bb03a2d5186f0baa784efb2008c24fab2
+
+PODFILE CHECKSUM: a4d481182f8b1079a85fb5013b9225f2fbfdaa59
+
+COCOAPODS: 1.1.1

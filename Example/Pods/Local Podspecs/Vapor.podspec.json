@@ -1,0 +1,22 @@
+{
+  "name": "Vapor",
+  "version": "0.1.0",
+  "summary": "A short description of Vapor.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/Vapor",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Nicholas Bonatsakis": "nbonatsakis@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/Vapor.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source_files": "Vapor/Classes/**/*"
+}

@@ -1,7 +1,9 @@
+platform :ios, '10.0'
 use_frameworks!
 
 target 'Vapor_Example' do
   pod 'Vapor', :path => '../'
+  pod 'Anchorage'
 
   target 'Vapor_Tests' do
     inherit! :search_paths
