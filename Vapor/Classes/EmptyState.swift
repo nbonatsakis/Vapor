@@ -71,7 +71,7 @@ public class EmptyStateView: UIView {
 
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         return button
     }()
 
@@ -104,6 +104,11 @@ public class EmptyStateView: UIView {
         set { actionButton.tintColor = newValue }
     }
 
+    public dynamic var emptyStateBackgroundColor: UIColor? {
+        get { return backgroundColor }
+        set { backgroundColor = newValue }
+    }
+
     // MARK: Init
 
     let emptyState: EmptyState
@@ -111,6 +116,8 @@ public class EmptyStateView: UIView {
     public init(emptyState: EmptyState) {
         self.emptyState = emptyState
         super.init(frame: .zero)
+
+        backgroundColor = .white
 
         messageLabel.text = emptyState.message
         imageView.image = emptyState.image
@@ -132,8 +139,12 @@ public class EmptyStateView: UIView {
 
     func configureLayout() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        let leading = stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+        leading.isActive = true
+        leading.constant = 20
+        let trailing =  stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        trailing.isActive = true
+        trailing.constant = -20
         stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
@@ -172,17 +183,25 @@ public protocol VaporDataSource {
 
 public extension VaporDataSource where Self: UIViewController {
 
-    func show(emptyState: EmptyState) {
+    public func vp_notifyDataChanged() {
+        if numberOfItems == 0 {
+            vp_show(emptyState: emptyState)
+        } else {
+            vp_hide(emptyState: emptyState)
+        }
+    }
+
+    public func vp_show(emptyState: EmptyState) {
         if let existingView = existingEmptyStateView, existingView.emptyState == emptyState {
             return
         }
 
-        show(emptyStateView: EmptyStateView(emptyState: emptyState))
+        vp_show(emptyStateView: EmptyStateView(emptyState: emptyState))
     }
 
-    func show(emptyStateView: EmptyStateView) {
+    public func vp_show(emptyStateView: EmptyStateView) {
         if let existingView = existingEmptyStateView {
-            hide(emptyStateView: existingView)
+            vp_hide(emptyStateView: existingView)
         }
 
         emptyStateView.alpha = 0.0
@@ -191,21 +210,28 @@ public extension VaporDataSource where Self: UIViewController {
         emptyStateView.translatesAutoresizingMaskIntoConstraints = false
         emptyStateView.leadingAnchor.constraint(equalTo: viewForEmptyState.leadingAnchor).isActive = true
         emptyStateView.trailingAnchor.constraint(equalTo: viewForEmptyState.trailingAnchor).isActive = true
-        emptyStateView.topAnchor.constraint(equalTo: viewForEmptyState.topAnchor).isActive = true
-        emptyStateView.bottomAnchor.constraint(equalTo: viewForEmptyState.bottomAnchor).isActive = true
+
+        // If the view for empty state is the view controller's view, use the layout guides, otherwise, use the regular anchors for top/bottom
+        if viewForEmptyState === view {
+            emptyStateView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+            emptyStateView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
+        } else {
+            emptyStateView.topAnchor.constraint(equalTo: viewForEmptyState.topAnchor).isActive = true
+            emptyStateView.bottomAnchor.constraint(equalTo: viewForEmptyState.bottomAnchor).isActive = true
+        }
 
         UIView.animate(withDuration: 0.3) {
             emptyStateView.alpha = 1.0
         }
     }
 
-    func hide(emptyState: EmptyState) {
+    public func vp_hide(emptyState: EmptyState) {
         if let existingView = existingEmptyStateView, existingView.emptyState == emptyState {
-            hide(emptyStateView: existingView)
+            vp_hide(emptyStateView: existingView)
         }
     }
-    
-    func hide(emptyStateView: EmptyStateView) {
+
+    public func vp_hide(emptyStateView: EmptyStateView) {
         guard let existingView = existingEmptyStateView else {
             return
         }
@@ -226,4 +252,5 @@ public extension VaporDataSource where Self: UIViewController {
 
         return nil
     }
+
 }

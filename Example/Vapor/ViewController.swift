@@ -16,11 +16,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.show(emptyState: self.emptyState)
+            self.vp_show(emptyState: self.emptyState)
         }
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 6) {
-            self.hide(emptyState: self.emptyState)
+            self.vp_hide(emptyState: self.emptyState)
         }
 
 
@@ -32,7 +32,6 @@ class ViewController: UIViewController {
     }
 
 }
-
 
 extension ViewController: VaporDataSource {
 
