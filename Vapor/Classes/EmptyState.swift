@@ -244,7 +244,7 @@ public extension VaporDataSource where Self: UIViewController {
     }
 
     private var existingEmptyStateView: EmptyStateView? {
-        for view in view.subviews {
+        for view in viewForEmptyState.subviews {
             if let emptyStateView = view as? EmptyStateView {
                 return emptyStateView
             }
